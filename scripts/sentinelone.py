@@ -10,7 +10,6 @@ import os
 from datetime import datetime
 from typing import Dict, Optional, List, Tuple
 
-sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
 
 from munkilib import FoundationPlist
@@ -24,10 +23,10 @@ OUTPUT_FILENAME = 'sentinelone.plist'
 
 def parse_status_output(output: str) -> Dict[str, str]:
     """Parse the status output into a dictionary.
-    
+
     Args:
         output: Raw output string from sentinelctl
-        
+
     Returns:
         Dictionary of key-value pairs
     """
@@ -45,10 +44,10 @@ def parse_status_output(output: str) -> Dict[str, str]:
 
 def get_status_data(s1_filter: str) -> Optional[Dict[str, str]]:
     '''Runs the status command with the specified filter string
-    
+
     Args:
         s1_filter: Filter string to pass to sentinelctl
-        
+
     Returns:
         Dictionary of status data or None if there was an error
     '''
@@ -60,19 +59,19 @@ def get_status_data(s1_filter: str) -> Optional[Dict[str, str]]:
     try:
         sp = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = sp.communicate()
-        
+
         if sp.returncode != 0:
             print(f"Error trying to execute status with filter {s1_filter}: {err}")
             return None
-            
+
         # Strip out the line containing the filter name
         output_lines = out.decode('UTF-8').splitlines(True)[1:]
         output = ''.join(output_lines)
-        
+
         # Parse the output into a dictionary
         result = parse_status_output(output)
         return result
-        
+
     except subprocess.SubprocessError as e:
         print(f"Failed to execute sentinelctl: {e}")
         return None
@@ -82,10 +81,10 @@ def get_status_data(s1_filter: str) -> Optional[Dict[str, str]]:
 
 def parse_last_seen(timestamp: str) -> str:
     '''Convert Last Seen timestamp to Unix timestamp
-    
+
     Args:
         timestamp: Timestamp string from sentinelctl
-        
+
     Returns:
         Unix timestamp as string
     '''
@@ -98,7 +97,7 @@ def parse_last_seen(timestamp: str) -> str:
             '%Y-%m-%d %H:%M:%S.%f',
             '%Y-%m-%d %H:%M:%S.%f %Z'
         ]
-        
+
         for fmt in formats:
             try:
                 # Clean up the timestamp string
@@ -108,9 +107,9 @@ def parse_last_seen(timestamp: str) -> str:
                 return unix_time
             except ValueError:
                 continue
-                
+
         return ''
-        
+
     except Exception as e:
         print(f"Error parsing timestamp: {e}")
         return ''
@@ -145,7 +144,7 @@ def main():
         'site-key': mgmt_data.get('Site Key', ''),
         'connected': mgmt_data.get('Connected', '')
     }
-    
+
     # Process Last Seen timestamp if available
     if 'Last Seen' in mgmt_data:
         result['last-seen'] = parse_last_seen(mgmt_data['Last Seen'])

@@ -81,34 +81,10 @@ var enforcing_security = function(colNumber, d){
 }
 
 // Formatters
-var format_sentinelone_active_threats = function(colNumber, row){
+var format_sentinelone_yes_no = function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
         colvar = col.text();
     colvar = colvar == '0' ? '<span class="label label-success">'+i18n.t('no')+'</span>' :
     colvar = (colvar == '1' ? '<span class="label label-danger">'+i18n.t('yes')+'</span>' : colvar)
-    col.html(colvar)
-}
-
-var format_sentinelone_agent_running = function(colNumber, row){
-    var col = $('td:eq('+colNumber+')', row),
-        colvar = col.text();
-    colvar = colvar == '0' ? '<span class="label label-danger">'+i18n.t('no')+'</span>' :
-    colvar = (colvar == '1' ? '<span class="label label-success">'+i18n.t('yes')+'</span>' : colvar)
-    col.html(colvar)
-}
-
-var format_sentinelone_enforcing_security = function(colNumber, row){
-    var col = $('td:eq('+colNumber+')', row),
-        colvar = col.text();
-    colvar = colvar == '0' ? '<span class="label label-danger">'+i18n.t('no')+'</span>' :
-    colvar = (colvar == '1' ? '<span class="label label-success">'+i18n.t('yes')+'</span>' : colvar)
-    col.html(colvar)
-}
-
-var format_sentinelone_self_protection = function(colNumber, row){
-    var col = $('td:eq('+colNumber+')', row),
-        colvar = col.text();
-    colvar = colvar == '0' ? '<span class="label label-danger">'+i18n.t('no')+'</span>' :
-    colvar = (colvar == '1' ? '<span class="label label-success">'+i18n.t('yes')+'</span>' : colvar)
     col.html(colvar)
 }
